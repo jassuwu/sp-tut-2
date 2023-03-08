@@ -1,0 +1,19 @@
+{
+  "name": "college-yearly-planner",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:MrRhuezzler/college-yearly-planner.git",
+  "author": "MrRhuezzler <anonymouspyro369@gmail.com>",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"wsrun --parallel dev\""
+  },
+  "dependencies": {
+    "concurrently": "^7.6.0",
+    "wsrun": "^5.2.4"
+  }
+}

@@ -1,0 +1,50 @@
+version: "2.13"
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=collegeYearlyPlanner
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  api:
+    build: packages/server
+    image: mrrhuezzler/cyp-backend
+    restart: always
+    environment:
+      - PORT=5000
+      - DATABASE_URL=postgresql://postgres:postgres@db/collegeYearlyPlanner
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    container_name: cyp-server
+
+  app:
+    build: packages/client
+    image: mrrhuezzler/cyp-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    container_name: cyp-react
+
+  nginx:
+    build: nginx/
+    image: mrrhuezzler/cyp-nginx
+    restart: always
+    depends_on:
+      - api
+      - app
+    ports:
+      - "8888:80"
+
+volumes:
+  db:
+    driver: local

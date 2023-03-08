@@ -1,0 +1,41 @@
+###
+POST http://localhost:5000/api/calendar
+Content-Type: application/json
+
+{
+    "year" : "sjf",
+    "holidays" : [{"Pongal" : "15/01/24"},{"Deepavali":"15/09/24"}]
+}
+
+###
+GET http://localhost:5000/calendar
+
+###
+GET http://localhost:5000/calendar/2023/planner
+
+###
+PATCH http://localhost:5000/calendar/2023
+Content-Type: application/json
+
+{
+    "holidays": [{"name":"Birthday","date":"25/05/23"},{"name":"New year","date":"01/01/23"}]
+}
+
+###
+POST http://localhost:5000/calendar/2023/planner
+Content-Type: application/json
+
+{
+    "name" : "CA 2-Group",
+    "startDate" : "2022-10-31T09:00:00Z",
+    "templateId"
+    "calendarYear" : 2023
+}
+###
+POST http://localhost:5000/api/calendar/2023/planner/1/addWorkingDays
+Content-Type: application/json
+
+{
+    "days" : 85,
+    "startDate" : "2022-07-11T00:00:00Z"
+}
