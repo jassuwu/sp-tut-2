@@ -11,6 +11,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
+
+// Health Check
+app.get("/", (req, res) => {
+  /* res.send("OK"); */
+  res.status(200).send("OK");
+});
+
 app.use("/api/calendar", require("./routes/Calendar"));
 app.use("/api/calendar", require("./routes/Planner"));
 app.use("/api/calendar", require("./routes/Activity"));

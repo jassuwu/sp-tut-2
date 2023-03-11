@@ -10,7 +10,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently \"wsrun --parallel dev\""
+    "client-dev": "cd ./packages/client/ && pnpm dev",
+    "server-dev": "cd ./packages/server/ && pnpm dev",
+    "dev": "concurrently \"pnpm client-dev\" \"pnpm server-dev\""
   },
   "dependencies": {
     "concurrently": "^7.6.0",
