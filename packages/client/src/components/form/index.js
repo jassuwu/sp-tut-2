@@ -92,8 +92,6 @@ export const DateTimeField = ({ label, name, onChange }) => {
     <div className="mb-4">
       <h1 className="text-primary text-3xl mb-2">{label}</h1>
       <DatePicker
-        // format="MM-dd-y"
-        // da
         value={
           value ? (!isNaN(new Date(value)) ? new Date(value) : null) : value
         }
