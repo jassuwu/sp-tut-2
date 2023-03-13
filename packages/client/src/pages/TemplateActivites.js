@@ -8,16 +8,16 @@ const TemplateActivities = () => {
   const [name, setName] = useState("");
   const [activities, setActivities] = useState([]);
 
-  const fetchTemplate = async () => {
-    const result = await Api.get(TEMPLATE_ONE_UPDATE_DELETE.replace(":id", id));
-    const data = result.data;
-    setName(data.name);
-    setActivities(data.activities);
-  };
 
   useEffect(() => {
+    const fetchTemplate = async () => {
+      const result = await Api.get(TEMPLATE_ONE_UPDATE_DELETE.replace(":id", id));
+      const data = result.data;
+      setName(data.name);
+      setActivities(data.activities);
+    };
     fetchTemplate();
-  }, []);
+  }, [activities, id]);
 
   return (
     <div className="p-6">

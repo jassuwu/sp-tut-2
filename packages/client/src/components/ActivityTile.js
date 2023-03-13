@@ -4,13 +4,8 @@ import DatePicker from "react-date-picker";
 import {
   AiFillDelete,
   AiFillEdit,
-  AiOutlineDelete,
-  AiOutlineEdit,
 } from "react-icons/ai";
 import { useActivity } from "../context/ActivityContext";
-import FormProvider from "../context/FormContext";
-import { DateTimeField, Submit, TextField, ToggleField } from "./form";
-import Modal from "./Modal";
 
 const ActivityTile = ({
   id,
@@ -133,11 +128,10 @@ const ActivityTile = ({
             setEditMode(!editMode);
             if (editMode) update();
           }}
-          className={`${
-            editMode
-              ? "text-secondary hover:text-primary"
-              : "text-primary hover:text-secondary"
-          }`}
+          className={`${editMode
+            ? "text-secondary hover:text-primary"
+            : "text-primary hover:text-secondary"
+            }`}
         >
           <AiFillEdit />
         </button>

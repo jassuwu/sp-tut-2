@@ -1,17 +1,5 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import DatePicker from "react-date-picker";
-import {
-  AiFillDelete,
-  AiFillEdit,
-  AiOutlineDelete,
-  AiOutlineEdit,
-} from "react-icons/ai";
-import { useActivity } from "../context/ActivityContext";
-import FormProvider from "../context/FormContext";
+import { AiFillDelete } from "react-icons/ai";
 import { useHolidays } from "../context/HolidaysContext";
-import { DateTimeField, Submit, TextField, ToggleField } from "./form";
-import Modal from "./Modal";
 
 const HolidaysTile = ({ index, name, date }) => {
   const { handleHolidaysAction } = useHolidays();

@@ -1,6 +1,3 @@
-import { useRef } from "react";
-import { useEffect } from "react";
-
 const Modal = ({ onClose, children }) => {
   return (
     <div

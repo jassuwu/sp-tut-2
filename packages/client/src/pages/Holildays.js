@@ -10,40 +10,40 @@ const Holidays = () => {
 
   const [holidays, setHolidays] = useState([]);
 
-  const fetchHolidays = async () => {
-    try {
-      const result = await Api.get(
-        CALENDAR_ONE_UPDATE_DELETE.replace(":year", year)
-      );
-      setHolidays(result.data.holidays);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
-  const updateHolidays = async () => {
-    try {
-      const result = await Api.put(
-        CALENDAR_ONE_UPDATE_DELETE.replace(":year", year),
-        {
-          holidays,
-        }
-      );
-      console.log(result);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   useEffect(() => {
+    const updateHolidays = async () => {
+      try {
+        const result = await Api.put(
+          CALENDAR_ONE_UPDATE_DELETE.replace(":year", year),
+          {
+            holidays,
+          }
+        );
+        console.log(result);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     if (holidays.length > 0) {
       updateHolidays();
     }
-  }, [holidays]);
+  }, [holidays, year]);
 
   useEffect(() => {
+    const fetchHolidays = async () => {
+      try {
+        const result = await Api.get(
+          CALENDAR_ONE_UPDATE_DELETE.replace(":year", year)
+        );
+        setHolidays(result.data.holidays);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     fetchHolidays();
-  }, []);
+  }, [year]);
 
   return (
     <div className="p-6 flex-1 relative">

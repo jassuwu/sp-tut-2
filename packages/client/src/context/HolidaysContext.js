@@ -1,22 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import DatePicker from "react-date-picker";
+import { createContext, useContext, useState } from "react";
 import { IoAddCircle } from "react-icons/io5";
-import { useParams } from "react-router-dom";
 import {
   DateTimeField,
-  NumberField,
   Submit,
   TextField,
-  ToggleField,
 } from "../components/form";
 import Modal from "../components/Modal";
-import Api from "../utils/Api";
-import {
-  ACTIVITY_ALL_CREATE,
-  ACTIVITY_ONE_UPDATE_DELETE,
-  ACTIVITY_UPDATE_ORDER,
-} from "../utils/Endpoints";
 import FormProvider from "./FormContext";
 
 const HolidaysContext = createContext();

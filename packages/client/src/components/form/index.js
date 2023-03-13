@@ -33,9 +33,8 @@ export const NumberField = ({ label, name, onChange }) => {
       <h1 className="text-primary text-3xl mb-2">{label}</h1>
       <input
         type="number"
-        className={`text-2xl underline text-secondary border ${
-          error ? "border-red-400" : "border-primary"
-        } rounded-md px-2 py-2 mb-2`}
+        className={`text-2xl underline text-secondary border ${error ? "border-red-400" : "border-primary"
+          } rounded-md px-2 py-2 mb-2`}
         value={value}
         onChange={(e) => {
           if (onChange) onChange(parseInt(e.target.value));
@@ -56,7 +55,7 @@ export const ToggleField = ({ label, name, choice1, choice2, onChange }) => {
   useEffect(() => {
     if (onChange) onChange(checked ? choice2 : choice1);
     updateFormData(name, checked ? choice2 : choice1);
-  }, [checked]);
+  }, [checked, choice1, choice2, onChange, updateFormData, name]);
 
   return (
     <div className="mb-4 cursor-pointer">
@@ -70,14 +69,12 @@ export const ToggleField = ({ label, name, choice1, choice2, onChange }) => {
           class="relative"
         >
           <div
-            class={`box ${
-              checked ? "bg-secondary" : "bg-primary"
-            } block h-8 w-14 rounded-full`}
+            class={`box ${checked ? "bg-secondary" : "bg-primary"
+              } block h-8 w-14 rounded-full`}
           ></div>
           <div
-            class={`${
-              checked && "translate-x-[100%]"
-            } dot absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition`}
+            class={`${checked && "translate-x-[100%]"
+              } dot absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition`}
           ></div>
         </div>
         <p>{choice2}</p>

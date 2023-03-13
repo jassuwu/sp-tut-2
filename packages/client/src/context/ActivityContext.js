@@ -1,6 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import DatePicker from "react-date-picker";
 import { IoAddCircle } from "react-icons/io5";
 import { useParams } from "react-router-dom";
 import {
@@ -96,8 +95,7 @@ const ActivitiesProvider = ({ value, setValue, children }) => {
       );
       setValue(result.data);
     } catch (err) {
-      const errors = err.response.data.errors;
-      return null;
+      throw Error(err);
     }
   };
 
@@ -110,8 +108,7 @@ const ActivitiesProvider = ({ value, setValue, children }) => {
       );
       setValue(result.data);
     } catch (err) {
-      const errors = err.response.data.errors;
-      return null;
+      throw Error(err);
     }
   };
 

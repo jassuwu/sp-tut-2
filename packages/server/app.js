@@ -1,12 +1,11 @@
 const express = require("express");
-const path = require("path");
 const createError = require("http-errors");
 const morgan = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
 
-app.use(cors({ origin: "http://localhost:3000/" }));
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));

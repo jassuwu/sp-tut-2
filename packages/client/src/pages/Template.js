@@ -24,7 +24,7 @@ const Template = () => {
         activities: [],
       });
     } else {
-      throw "Error";
+      throw Error("Name is required");
     }
   };
 

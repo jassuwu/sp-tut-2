@@ -1,6 +1,6 @@
 import CalendarTile from "../components/CalendarTile";
 import { IoAddCircle } from "react-icons/io5";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Api from "../utils/Api";
 import { CALENDAR_ALL_CREATE } from "../utils/Endpoints";
 import Modal from "../components/Modal";
@@ -34,7 +34,7 @@ const Calendar = () => {
 
   const createCalendar = async (body) => {
     try {
-      const result = await Api.post(CALENDAR_ALL_CREATE, {
+      await Api.post(CALENDAR_ALL_CREATE, {
         ...body,
         holidays: [],
       });

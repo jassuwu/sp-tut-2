@@ -1,7 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { AiOutlineCloudDownload } from "react-icons/ai";
-import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 const TemplateTile = ({ id, name, activities }) => {
   const navigate = useNavigate();
 

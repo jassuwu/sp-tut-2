@@ -1,16 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AiFillCheckCircle, AiOutlineEdit } from "react-icons/ai";
-import DatePicker from "react-date-picker";
+import { AiOutlineEdit } from "react-icons/ai";
 import Api from "../utils/Api";
 import {
-  ACTIVITY_UPDATE_ORDER,
   PLANNER_ONE_UPDATE_DELETE,
 } from "../utils/Endpoints";
 import Modal from "../components/Modal";
 import ActivityTile from "../components/ActivityTile";
-import ActivityReOrder from "../components/ActivityReOrder";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable } from "react-beautiful-dnd";
 import FormProvider from "../context/FormContext";
 import {
   DateTimeField,
@@ -56,23 +53,10 @@ const Activities = () => {
     buildInitialUpdateFormData(new Date().getFullYear())
   );
 
-  const fetchPlanner = async () => {
-    const result = await Api.get(
-      PLANNER_ONE_UPDATE_DELETE.replace(":year", year).replace(":id", id)
-    );
-    const data = result.data;
-    console.log(data);
-    setName(data.name);
-    setActivities(data.activities);
-    setTotalWorkingDays(data.totalWorkingDays);
-    setStartDate(new Date(data.startDate));
-    setLastDate(new Date(data.lastDate));
-    setRemainingDays(data.remainingDays);
-  };
 
   const updatePlanner = async (data) => {
     try {
-      const result = await Api.put(
+      await Api.put(
         PLANNER_ONE_UPDATE_DELETE.replace(":year", year).replace(":id", id),
         { ...data }
       );
@@ -84,9 +68,41 @@ const Activities = () => {
   };
 
   useEffect(() => {
+    const fetchPlanner = async () => {
+      const result = await Api.get(
+        PLANNER_ONE_UPDATE_DELETE.replace(":year", year).replace(":id", id)
+      );
+      const data = result.data;
+      console.log(data);
+      setName(data.name);
+      setActivities(data.activities);
+      setTotalWorkingDays(data.totalWorkingDays);
+      setStartDate(new Date(data.startDate));
+      setLastDate(new Date(data.lastDate));
+      setRemainingDays(data.remainingDays);
+    };
+    const buildInitialUpdateFormData = (year) => {
+      return {
+        body: {
+          name: {
+            value: name,
+            error: "",
+          },
+          startDate: {
+            value: startDate.toISOString(),
+            error: "",
+          },
+          totalWorkingDays: {
+            value: totalWorkingDays,
+            error: "",
+          },
+        },
+        errors: [],
+      };
+    };
     setUpdateFormData(buildInitialUpdateFormData());
     fetchPlanner();
-  }, [showModal]);
+  }, [showModal, year, id, name, startDate, totalWorkingDays]);
 
   return (
     <div className="p-6">

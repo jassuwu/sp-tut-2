@@ -13,7 +13,6 @@ import FormProvider from "../context/FormContext";
 import Api from "../utils/Api";
 import {
   PLANNER_ALL_CREATE,
-  PLANNER_ONE_UPDATE_DELETE,
 } from "../utils/Endpoints";
 
 const Planner = () => {
@@ -43,15 +42,11 @@ const Planner = () => {
     ...initialCreateFormData,
   });
 
-  const getAllPlanners = async () => {
-    const result = await Api.get(PLANNER_ALL_CREATE.replace(":year", year));
-    return result.data;
-  };
 
   const createPlanner = async (body) => {
     try {
       // console.log(body);
-      const result = await Api.post(PLANNER_ALL_CREATE.replace(":year", year), {
+      await Api.post(PLANNER_ALL_CREATE.replace(":year", year), {
         ...body,
       });
       setShowModal(false);
@@ -65,11 +60,15 @@ const Planner = () => {
   const [planners, setPlanners] = useState([]);
 
   useEffect(() => {
+    const getAllPlanners = async () => {
+      const result = await Api.get(PLANNER_ALL_CREATE.replace(":year", year));
+      return result.data;
+    };
     (async () => {
       const data = await getAllPlanners();
       setPlanners(data);
     })();
-  }, [showModal]);
+  }, [showModal, year]);
 
   return (
     <div className="p-6">
