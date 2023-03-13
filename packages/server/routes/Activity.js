@@ -7,6 +7,61 @@ const { route } = require("./Planner");
 
 const baseURL = "/:year/planner/:id/activity";
 
+
+// Common functions for the updatedActivity
+const getUpdatedActivities = async (plannerId) => {
+  let planner = await prisma.planner.findUnique({
+    where: { id: Number(plannerId) },
+    include: { calendar: true, activities: { orderBy: { order: "asc" } } },
+  });
+
+  let startDate = new Date(planner.startDate);
+  const holidays = planner.calendar.holidays;
+  const acitivites = planner.activities;
+
+  const calculatedDates = [];
+
+  for (let i = 0; i < acitivites.length; i++) {
+    const foundActivity = acitivites[i];
+    if (foundActivity.type === "RELATIVE") {
+      const newDate = addWeekdaysWithoutHolidays(
+        (holidays || []).map((v) => new Date(v.date).toLocaleDateString()),
+        startDate,
+        foundActivity.relativeDays
+      );
+
+      calculatedDates.push({ id: foundActivity.id, date: newDate });
+      startDate = newDate;
+    } else {
+      calculatedDates.push({
+        id: foundActivity.id,
+        date: foundActivity.relativeDate,
+      });
+      startDate = foundActivity.relativeDate;
+    }
+  }
+
+  const updatedActivities = await Promise.all(
+    calculatedDates.map((v, index) => {
+      return prisma.activity.update({
+        where: {
+          id: v.id,
+        },
+        data: {
+          date: v.date,
+          order: index,
+        },
+      });
+    })
+  );
+
+  return updatedActivities;
+};
+
+
+
+
+
 router.get(
   baseURL,
   validateRequest([
@@ -239,58 +294,7 @@ router.put(
         });
         // return res.send(activity);
       }
-
-      let planner = await prisma.planner.findUnique({
-        where: { id: Number(id) },
-        include: { calendar: true, activities: { orderBy: { order: "asc" } } },
-      });
-
-      let startDate = new Date(planner.startDate);
-      const holidays = planner.calendar.holidays;
-      const acitivites = planner.activities;
-
-      const calculatedDates = [];
-
-      for (let i = 0; i < acitivites.length; i++) {
-        const foundActivity = acitivites[i];
-        if (foundActivity.type === "RELATIVE") {
-          const newDate = addWeekdaysWithoutHolidays(
-            (holidays || []).map((v) => new Date(v.date).toLocaleDateString()),
-            startDate,
-            foundActivity.relativeDays
-          );
-
-          calculatedDates.push({ id: foundActivity.id, date: newDate });
-          startDate = newDate;
-        } else {
-          calculatedDates.push({
-            id: foundActivity.id,
-            date: foundActivity.relativeDate,
-          });
-          startDate = foundActivity.relativeDate;
-        }
-      }
-
-      const updatedActivities = await Promise.all(
-        calculatedDates.map((v, index) => {
-          return prisma.activity.update({
-            where: {
-              id: v.id,
-            },
-            data: {
-              date: v.date,
-              order: index,
-            },
-          });
-        })
-      );
-
-      // const activity = await prisma.activity.findUnique({
-      //   where: {
-      //     id: activity_id,
-      //   },
-      // });
-
+      const updatedActivities = getUpdatedActivities(id);
       return res.send(updatedActivities);
     } catch (err) {
       next(err);
@@ -315,55 +319,7 @@ router.post(
     try {
       const { year, id } = req.params;
       const { orders } = req.body;
-
-      let planner = await prisma.planner.findUnique({
-        where: { id: Number(id) },
-        include: { calendar: true, activities: { orderBy: { order: "asc" } } },
-      });
-
-      let startDate = new Date(planner.startDate);
-      const holidays = planner.calendar.holidays;
-      const acitivites = planner.activities;
-
-      const calculatedDates = [];
-
-      for (let i = 0; i < orders.length; i++) {
-        const foundActivity = acitivites.find((v) => v.id === orders[i]);
-        if (!foundActivity)
-          throw new Error("activity doesn't belong to the planner");
-
-        if (foundActivity.type === "RELATIVE") {
-          const newDate = addWeekdaysWithoutHolidays(
-            (holidays || []).map((v) => new Date(v.date).toLocaleDateString()),
-            startDate,
-            foundActivity.relativeDays
-          );
-
-          calculatedDates.push({ id: orders[i], date: newDate });
-          startDate = newDate;
-        } else {
-          calculatedDates.push({
-            id: orders[i],
-            date: foundActivity.relativeDate,
-          });
-          startDate = foundActivity.relativeDate;
-        }
-      }
-
-      const updatedActivities = await Promise.all(
-        calculatedDates.map((v, index) => {
-          return prisma.activity.update({
-            where: {
-              id: v.id,
-            },
-            data: {
-              date: v.date,
-              order: index,
-            },
-          });
-        })
-      );
-
+      const updatedActivities = getUpdatedActivities(id);
       res.send(updatedActivities);
     } catch (err) {
       next(err);
@@ -395,52 +351,8 @@ router.delete(
           id: activity_id,
         },
       });
-      
-      let planner = await prisma.planner.findUnique({
-        where: { id: Number(id) },
-        include: { calendar: true, activities: { orderBy: { order: "asc" } } },
-      });
 
-      let startDate = new Date(planner.startDate);
-      const holidays = planner.calendar.holidays;
-      const acitivites = planner.activities;
-
-      const calculatedDates = [];
-
-      for (let i = 0; i < acitivites.length; i++) {
-        const foundActivity = acitivites[i];
-        if (foundActivity.type === "RELATIVE") {
-          const newDate = addWeekdaysWithoutHolidays(
-            (holidays || []).map((v) => new Date(v.date).toLocaleDateString()),
-            startDate,
-            foundActivity.relativeDays
-          );
-
-          calculatedDates.push({ id: foundActivity.id, date: newDate });
-          startDate = newDate;
-        } else {
-          calculatedDates.push({
-            id: foundActivity.id,
-            date: foundActivity.relativeDate,
-          });
-          startDate = foundActivity.relativeDate;
-        }
-      }
-
-      const updatedActivities = await Promise.all(
-        calculatedDates.map((v, index) => {
-          return prisma.activity.update({
-            where: {
-              id: v.id,
-            },
-            data: {
-              date: v.date,
-              order: index,
-            },
-          });
-        })
-      );
-
+      const updatedActivities = getUpdatedActivities(id);
       return res.send(updatedActivities);
     } catch (err) {
       next(err);
