@@ -144,7 +144,7 @@ const Activities = () => {
         <div className="flex-1">
           <ActivitiesProvider value={activities} setValue={setActivities}>
             {activities.map((activity, index) => (
-              <Draggable key={index} draggableId={`${index}`} index={index}>
+              <Draggable key={`${activity.toDateString()}`} draggableId={`${index}`} index={index}>
                 {(provided) => (
                   <tr
                     className="border-2 border-primary whitespace-pre-wrap"
@@ -152,7 +152,7 @@ const Activities = () => {
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                   >
-                    <ActivityTile key={index} {...activity} />
+                    <ActivityTile key={`${activity.toDateString()}`} {...activity} />
                   </tr>
                 )}
               </Draggable>
@@ -226,8 +226,8 @@ const Activities = () => {
             <NumberField label="Total Working days" name="totalWorkingDays" />
             {updateFormData.errors && updateFormData.errors.length > 0 && (
               <div className="text-sm text-red-500 my-4">
-                {updateFormData.errors.map((msg, index) => {
-                  return <p key={index}>*{msg}</p>;
+                {updateFormData.errors.map((msg) => {
+                  return <p key={msg}>*{msg}</p>;
                 })}
               </div>
             )}

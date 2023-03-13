@@ -76,8 +76,8 @@ const Calendar = () => {
           </div>
         </div>
         <div className="px-10 lg:px-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
-          {calendars.map((calendar, index) => (
-            <CalendarTile key={index} {...calendar} />
+          {calendars.map((calendar) => (
+            <CalendarTile key={calendar} {...calendar} />
           ))}
         </div>
         {showModal && (
@@ -95,8 +95,8 @@ const Calendar = () => {
               <NumberField label="Year" name="year" />
               {createFormData.errors && createFormData.errors.length > 0 && (
                 <div className="text-sm text-red-500 my-4">
-                  {createFormData.errors.map((msg, index) => {
-                    return <p key={index}>*{msg}</p>;
+                  {createFormData.errors.map((msg) => {
+                    return <p key={msg}>*{msg}</p>;
                   })}
                 </div>
               )}

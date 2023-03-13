@@ -126,8 +126,8 @@ const Planner = () => {
             <NumberField label="Total Working days" name="totalWorkingDays" />
             {createFormData.errors && createFormData.errors.length > 0 && (
               <div className="text-sm text-red-500 my-4">
-                {createFormData.errors.map((msg, index) => {
-                  return <p key={index}>*{msg}</p>;
+                {createFormData.errors.map((msg) => {
+                  return <p key={msg}>*{msg}</p>;
                 })}
               </div>
             )}

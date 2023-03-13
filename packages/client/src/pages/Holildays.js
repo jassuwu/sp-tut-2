@@ -60,7 +60,7 @@ const Holidays = () => {
           <HolidaysProvider value={holidays} setValue={setHolidays}>
             {holidays.map((holiday, index) => (
               <tr
-                key={index}
+                key={holiday}
                 className="border-2 border-primary whitespace-pre-wrap"
               >
                 <HolidaysTile index={index} {...holiday} />
